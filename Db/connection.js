@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+require('dotenv').config()
 
-const db = "mongodb+srv://Hatim:hatim123@cluster0.x7xi2sy.mongodb.net/FlavorHub?retryWrites=true&w=majority"
+const db = process.env.DATABASE; 
 
 mongoose.connect(db,{
     useNewUrlParser: true,
