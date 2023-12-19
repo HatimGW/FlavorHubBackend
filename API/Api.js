@@ -171,9 +171,9 @@ router.get("/check",async(req,res)=>{
      )
         res.status(200).json({success:true,cart:user.cart})
      }
-     else{
-      res.send({Alert:true})
-    }
+    //  else{
+    //   res.send({Alert:true})
+    // }
     res.status(400).json({message:"Already added"}) 
   }
     catch (error) {
