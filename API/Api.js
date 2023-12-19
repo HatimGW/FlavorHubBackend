@@ -17,7 +17,7 @@
 
    const store = new MongoStore({
     uri: process.env.DATABASE,
-    collection: "session"
+    collection: "sessions"
   });
   
   router.use(session({
@@ -97,12 +97,7 @@ router.post('/signup', [
       const compare = await bcrypt.compare(password,check.password)
 
       if(compare){
-             
-              req.session.email = check.email
-              req.session._id = check._id
-              req.session.firstname = check.firstname
-              req.session.lastname = check.lastname
-
+          req.session.isAuth = true;
               res.status(200).json({success:true, message:"Login Succesfully"})
       }
       else {
@@ -117,7 +112,7 @@ router.post('/signup', [
 
 
   const isAuthenticated = (req, res, next) => {
-      if (req.session && req.session.email) {
+      if (req.session.isAuth) {
         console.log('Authentication successful. Session:', req.session.firstname);
         next();
       } else {
