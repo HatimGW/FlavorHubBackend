@@ -91,15 +91,15 @@ router.post('/signup', [
       const compare = await bcrypt.compare(password,check.password)
 
       if(compare){
-              req.session.email = check.email;
-              req.session.username = check.firstname;
-              req.session.lastname = check.lastname;
-              req.session.cart =  check.cart;
-              req.session._id =  check._id;
+              req.session.email = await check.email;
+              req.session.username = await check.firstname;
+              req.session.lastname = await check.lastname;
+              req.session.cart = await check.cart;
+              req.session._id = await check._id;
               res.status(200).json({success:true,message:"Login Succesfully"})
       }
       else {
-         res.status(400).json({message: "Invalid Password" });
+        res.send({message:"Invalid Credential"})
 }
       } catch (error) {
          res.status(500).json({message:"Invalid"})
