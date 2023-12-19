@@ -20,7 +20,7 @@
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
       }),
-      cookie: { secure: true}
+      cookie: { secure: true , httpOnly: true;}
     }));
 
 
