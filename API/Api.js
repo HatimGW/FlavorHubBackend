@@ -98,12 +98,20 @@ router.post('/signup', [
 
       if(compare){
              
+<<<<<<< HEAD
               req.session.email = check.email
               req.session._id = check._id
               req.session.firstname = check.firstname
               req.session.lastname = check.lastname
 
               res.status(200).json({success:true, message:"Login Succesfully"})
+=======
+        req.session._id=check._id
+        req.session.firstname=check.firstname
+        req.session.lasname=check.lastname
+        req.session.email=check.email
+        res.status(200).json({success:true, message:"Login Succesfully"})
+>>>>>>> 17fbbb018140ed390e8b76ff16f9b00afa448da2
       }
       else {
         res.status(400).json({ message: "Invalid Credential" });
@@ -116,15 +124,39 @@ router.post('/signup', [
 
 
 
-  const isAuthenticated = (req, res, next) => {
-      if (req.session && req.session.email) {
-        console.log('Authentication successful. Session:', req.session.firstname);
-        next();
+  //const isAuthenticated = (req, res, next) => {
+      //if (req.session && req.session.email) {
+        //console.log('Authentication successful. Session:', req.session.firstname);
+        //next();
+   //   } else {
+        //console.log('Authentication failed. Session:', req.session.firstname);
+        //res.status(401).json({ success: false, message: 'Unauthorized' });
+    //  }
+    //};
+const isAuthenticated = async (req, res, next) => {
+  // Check if session cookie is present in the request
+  if (req.session && req.session.id) {
+    try {
+      // Retrieve user information from the database using the session identifier
+      const user = await userdata.findById(req.session._id);
+
+      // If user is found, authentication is successful
+      if (user) {
+        console.log('Authentication successful. User:', user);
+        next(); // Proceed to the next middleware or route
       } else {
-        console.log('Authentication failed. Session:', req.session.firstname);
+        console.log('Authentication failed. User not found.');
         res.status(401).json({ success: false, message: 'Unauthorized' });
       }
-    };
+    } catch (error) {
+      console.error('Error during authentication:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  } else {
+    console.log('Authentication failed. Session ID not present.');
+    res.status(401).json({ success: false, message: 'Unauthorized' });
+  }
+};
 
 
 router.get("/check",async(req,res)=>{
