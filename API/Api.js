@@ -21,7 +21,12 @@
       saveUninitialized: true,
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
-      })
+      }),
+      cookie: {
+         secure: true ,
+         domain: 'flavorhub53.netlify.app',
+        sameSite: 'None',
+        httpOnly: true}
     }));
 
 
@@ -115,37 +120,11 @@ router.post('/signup', [
       if (req.session && req.session.email) {
         console.log('Authentication successful. Session:', req.session.firstname);
         next();
-     } else {
+      } else {
         console.log('Authentication failed. Session:', req.session.firstname);
         res.status(401).json({ success: false, message: 'Unauthorized' });
-     }
+      }
     };
-
-    
-// const isAuthenticated = async (req, res, next) => {
-//   // Check if session cookie is present in the request
-//   if (req.session && req.session.id) {
-//     try {
-//       // Retrieve user information from the database using the session identifier
-//       const user = await userdata.findById(req.session._id);
-
-//       // If user is found, authentication is successful
-//       if (user) {
-//         console.log('Authentication successful. User:', user);
-//         next(); // Proceed to the next middleware or route
-//       } else {
-//         console.log('Authentication failed. User not found.');
-//         res.status(401).json({ success: false, message: 'Unauthorized' });
-//       }
-//     } catch (error) {
-//       console.error('Error during authentication:', error);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     }
-//   } else {
-//     console.log('Authentication failed. Session ID not present.');
-//     res.status(401).json({ success: false, message: 'Unauthorized' });
-//   }
-// };
 
 
 router.get("/check",async(req,res)=>{
