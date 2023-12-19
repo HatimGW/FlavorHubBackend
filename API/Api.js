@@ -14,13 +14,13 @@
   router.use(express.json());
 
   router.use(session({
-      secret: 'hatim@123',
+      secret: process.env.secret_KEY,
       resave: false,
       saveUninitialized: true,
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
       }),
-      cookie: { secure: process.env.NODE_ENV === 'production'}
+      cookie: { secure: false}
     }));
 
 
@@ -175,9 +175,9 @@ router.get("/check",async(req,res)=>{
      )
         res.status(200).json({success:true,cart:user.cart})
      }
-    //  else{
-    //   res.send({Alert:true})
-    // }
+     else{
+      res.send({Alert:true})
+    }
     res.status(400).json({message:"Already added"}) 
   }
     catch (error) {
