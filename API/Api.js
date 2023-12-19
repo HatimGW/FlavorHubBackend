@@ -20,7 +20,7 @@
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
       }),
-      cookie: { secure: false}
+      cookie: { secure: true}
     }));
 
 
@@ -81,9 +81,7 @@ router.post('/signup', [
 
 
   router.post("/login",async(req,res)=>{
-    console.log('Request Body:', req.body);
       const{email,password}=req.body
-      
 
       try {
       const check = await userdata.findOne({email})
@@ -98,11 +96,10 @@ router.post('/signup', [
               req.session.lastname = check.lastname;
               req.session.cart =  check.cart;
               req.session._id =  check._id;
-              console.log('Session Data:', req.session.username)
               res.status(200).json({success:true,message:"Login Succesfully"})
       }
       else {
-         res.status(400).json({ success: false, message: "Invalid Password" });
+         res.status(400).json({message: "Invalid Password" });
 }
       } catch (error) {
          res.status(500).json({message:"Invalid"})
