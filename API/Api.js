@@ -26,10 +26,7 @@
       saveUninitialized: true,
       store: store,
       cookie: {
-         secure: true ,
-         domain: 'https://flavorhub53.web.app',
-        sameSite: 'None',
-        httpOnly: true}
+         secure: true }
     }));
 
 
