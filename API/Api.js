@@ -22,7 +22,7 @@
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
       }),
-      cookie: { secure: true , httpOnly: true}
+      cookie: { secure: true ,httpOnly: true}
     }));
 
 
@@ -89,22 +89,23 @@ router.post('/signup', [
       const check = await userdata.findOne({email})
       if(!check){
           res.status(404).json({message:"Invalid Email or password"})
-      }l
+      }else{
       const compare = await bcrypt.compare(password,check.password)
 
       if(compare){
-              req.session.email = await check.email;
-              req.session.username = await check.firstname;
-              req.session.lastname = await check.lastname;
-              req.session.cart = await check.cart;
-              req.session._id = await check._id;
+              req.session.email = check.email;
+              req.session.username = check.firstname;
+              req.session.lastname = check.lastname;
+              req.session.cart = check.cart;
+              req.session._id = check._id;
 
               res.status(200).json({success:true,message:"Login Succesfully"})
       }
       else {
-        res.send({message:"Invalid Credential"})
-}
-      } catch (error) {
+        res.status(400).json({ message: "Invalid Credential" });
+      }
+     } } 
+     catch (error) {
          res.status(500).json({message:"Invalid"})
       }
   })
