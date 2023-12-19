@@ -24,7 +24,7 @@
       }),
       cookie: {
          secure: true ,
-         domain: 'flavorhub53.netlify.app',
+         domain: 'https://flavorhub53.web.app',
         sameSite: 'None',
         httpOnly: true}
     }));
