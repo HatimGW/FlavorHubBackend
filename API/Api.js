@@ -6,7 +6,7 @@
   const { body, validationResult } = require('express-validator');
   const bodyParser = require('body-parser');
   router.use(bodyParser.json());
-  const MongoStore = require('connect-mongo');
+  const MongoStore = require('connect-mongodb-session')(session);
   const cookieParser = require("cookie-parser");
 
 
