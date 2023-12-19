@@ -98,9 +98,9 @@ router.post('/signup', [
               req.session._id =  check._id;
               res.status(200).json({success:true,message:"Login Succesfully"})
       }
-      else{
-        res.status(400)
-      }
+      else {
+         res.status(400).json({ success: false, message: "Invalid Password" });
+}
       } catch (error) {
          res.status(500).json({message:"Invalid"})
       }
