@@ -29,8 +29,7 @@
         secure: true, // or false if not using HTTPS in development
         maxAge: 1000 * 60 * 60 * 24, // set an appropriate session duration
         httpOnly: true,
-        sameSite: 'strict', // or 'lax' depending on your requirements
-        name: 'your-session-name', // replace with your preferred name
+        sameSite: 'strict'
     }
     }));
 
@@ -103,6 +102,10 @@ router.post('/signup', [
 
       if(compare){
           req.session.isAuth = true;
+          req.session._id = check._id
+          req.session.firstname = check.firstname
+          req.session.lastname = check.lastname
+          req.session.email = check.email
               res.status(200).json({success:true, message:"Login Succesfully"})
       }
       else {
@@ -129,7 +132,6 @@ router.post('/signup', [
 
 router.get("/check",async(req,res)=>{
   try {
-    // const check = await userdata.findById(req.session.isAuth)
     if(req.session.isAuth){
     res.status(200).json({success:true})
   }
