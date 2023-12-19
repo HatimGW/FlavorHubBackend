@@ -6,6 +6,7 @@
   const { body, validationResult } = require('express-validator');
   const bodyParser = require('body-parser');
   router.use(bodyParser.json());
+  const MongoStore = require('connect-mongo');
 
 
   const Item = require("../Models/MenuModel")
@@ -16,6 +17,9 @@
       secret: 'hatim@123',
       resave: false,
       saveUninitialized: true,
+      store: MongoStore.create({
+        mongoUrl: process.env.DATABASE,
+      }),
       cookie: { secure: process.env.NODE_ENV === 'production'}
     }));
 
