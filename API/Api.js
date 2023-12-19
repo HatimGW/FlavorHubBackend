@@ -14,14 +14,17 @@
 
   router.use(express.json());
   router.use(cookieParser());
+
+   const store = new MongoStore({
+    uri: process.env.DATABASE,
+    collection: "session"
+  });
   
   router.use(session({
       secret: process.env.SECRET_KEY,
       resave: false,
       saveUninitialized: true,
-      store: MongoStore.create({
-        mongoUrl: process.env.DATABASE,
-      }),
+      store: store,
       cookie: {
          secure: true ,
          domain: 'https://flavorhub53.web.app',
