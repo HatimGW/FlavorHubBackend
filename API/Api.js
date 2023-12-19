@@ -99,7 +99,7 @@ router.post('/signup', [
               res.status(200).json({success:true,message:"Login Succesfully"})
       }
       else{
-        res.send("Invalid")
+        res.status(400)
       }
       } catch (error) {
          res.status(500).json({message:"Invalid"})
@@ -110,10 +110,10 @@ router.post('/signup', [
 
   const isAuthenticated = (req, res, next) => {
       if (req.session && req.session.email) {
-        console.log('Authentication successful. Session:', req.session.email);
+        console.log('Authentication successful. Session:', req.session);
         next();
       } else {
-        console.log('Authentication failed. Session:', req.session.email);
+        console.log('Authentication failed. Session:', req.session);
         res.status(401).json({ success: false, message: 'Unauthorized' });
       }
     };
