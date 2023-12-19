@@ -98,7 +98,7 @@ router.post('/signup', [
 
       if(compare){
              
-        req.session._id=check.id
+        req.session._id=check._id
         req.session.firstname=check.firstname
         req.session.lasname=check.lastname
         req.session.email=check.email
