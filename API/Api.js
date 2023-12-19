@@ -109,7 +109,7 @@ router.post('/signup', [
 
 
   const isAuthenticated = (req, res, next) => {
-      if (req.session.email) {
+      if (req.session && req.session.email) {
         console.log('Authentication successful. Session:', req.session.email);
         next();
       } else {
