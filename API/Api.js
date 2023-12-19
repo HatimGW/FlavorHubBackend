@@ -105,13 +105,10 @@ router.post('/signup', [
       const compare = await bcrypt.compare(password,check.password)
 
       if(compare){
-              req.session.email = check.email;
-              req.session.username = check.firstname;
-              req.session.lastname = check.lastname;
-              req.session.cart = check.cart;
-              req.session._id = check._id;
+             
+              req.session = check;
 
-              res.status(200).json({success:true,message:"Login Succesfully"})
+              res.status(200).json({success:true, message:"Login Succesfully"})
       }
       else {
         res.status(400).json({ message: "Invalid Credential" });
@@ -126,10 +123,10 @@ router.post('/signup', [
 
   const isAuthenticated = (req, res, next) => {
       if (req.session && req.session.email) {
-        console.log('Authentication successful. Session:', req.session);
+        console.log('Authentication successful. Session:', req.session.firstname);
         next();
       } else {
-        console.log('Authentication failed. Session:', req.session.username);
+        console.log('Authentication failed. Session:', req.session.firstname);
         res.status(401).json({ success: false, message: 'Unauthorized' });
       }
     };
@@ -153,7 +150,7 @@ router.get("/check",async(req,res)=>{
 
   router.get('/main', isAuthenticated, (req, res) => {
       console.log('User authenticated. Session:', req.session);
-      res.status(200).json({ username:{first:req.session.username,last:req.session.lastname}, success: true, message: 'Authenticated. Welcome to the main page!' });
+      res.status(200).json({ username:{first:req.session.firstname,last:req.session.lastname}, success: true, message: 'Authenticated. Welcome to the main page!' });
     });
 
 
