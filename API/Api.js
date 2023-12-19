@@ -98,7 +98,6 @@ router.post('/signup', [
               req.session.lastname = check.lastname;
               req.session.cart =  check.cart;
               req.session._id =  check._id;
-              console.log('Session Data:', req.session)
               console.log('Session Data:', req.session.username)
               res.status(200).json({success:true,message:"Login Succesfully"})
       }
@@ -117,7 +116,7 @@ router.post('/signup', [
         console.log('Authentication successful. Session:', req.session);
         next();
       } else {
-        console.log('Authentication failed. Session:', req.session);
+        console.log('Authentication failed. Session:', req.session.username);
         res.status(401).json({ success: false, message: 'Unauthorized' });
       }
     };
