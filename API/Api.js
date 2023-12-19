@@ -14,7 +14,7 @@
   router.use(express.json());
 
   router.use(session({
-      secret: process.env.secret_KEY,
+      secret: process.env.SECRET_KEY,
       resave: false,
       saveUninitialized: false,
       store: MongoStore.create({
