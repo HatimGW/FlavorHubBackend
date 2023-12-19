@@ -16,7 +16,7 @@
   router.use(session({
       secret: 'hatim@123',
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
       }),
