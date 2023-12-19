@@ -16,7 +16,7 @@
   router.use(session({
       secret: process.env.secret_KEY,
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
       }),
@@ -81,13 +81,15 @@ router.post('/signup', [
 
 
   router.post("/login",async(req,res)=>{
+    console.log('Request Body:', req.body);
       const{email,password}=req.body
+      
 
       try {
       const check = await userdata.findOne({email})
       if(!check){
           res.status(404).json({message:"Invalid Email or password"})
-      }
+      }l
       const compare = await bcrypt.compare(password,check.password)
 
       if(compare){
@@ -96,11 +98,12 @@ router.post('/signup', [
               req.session.lastname = check.lastname;
               req.session.cart =  check.cart;
               req.session._id =  check._id;
+              console.log('Session Data:', req.session.username)
               res.status(200).json({success:true,message:"Login Succesfully"})
       }
-      else{
-        res.send("Invalid")
-      }
+      else {
+         res.status(400).json({ success: false, message: "Invalid Password" });
+}
       } catch (error) {
          res.status(500).json({message:"Invalid"})
       }
@@ -110,10 +113,10 @@ router.post('/signup', [
 
   const isAuthenticated = (req, res, next) => {
       if (req.session && req.session.email) {
-        console.log('Authentication successful. Session:', req.session.email);
+        console.log('Authentication successful. Session:', req.session);
         next();
       } else {
-        console.log('Authentication failed. Session:', req.session.email);
+        console.log('Authentication failed. Session:', req.session.username);
         res.status(401).json({ success: false, message: 'Unauthorized' });
       }
     };
