@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3001
 require("./Db/connection")
 
 app.use(cors({
-    origin: 'https://flavorhub53.netlify.app', 
+    origin: 'https://flavorhub53.netlify.app',
     credentials: true, 
   }))
   // app.use(cors({

@@ -22,11 +22,11 @@
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
       }),
-      cookie: {
-         secure: true ,
-         domain: 'flavorhub53.netlify.app',
-        sameSite: 'None',
-        httpOnly: true}
+      // cookie: {
+      //    secure: true,
+      //    domain: 'flavorhub53.netlify.app',
+      //   sameSite: 'None',
+      //   httpOnly: true}
     }));
 
 
@@ -98,7 +98,10 @@ router.post('/signup', [
 
       if(compare){
              
-              req.session = check;
+              req.session.email = check.email
+              req.session._id = check._id
+              req.session.firstname = check.firstname
+              req.session.lastname = check.lastname
 
               res.status(200).json({success:true, message:"Login Succesfully"})
       }
