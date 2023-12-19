@@ -23,7 +23,7 @@
   router.use(session({
       secret: process.env.SECRET_KEY,
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
       store: store,
       cookie: {
          secure: true }
@@ -124,8 +124,8 @@ router.post('/signup', [
 
 router.get("/check",async(req,res)=>{
   try {
-    const check = await userdata.findById(req.session._id)
-  if(check){
+    // const check = await userdata.findById(req.session.isAuth)
+    if(req.session.isAuth){
     res.status(200).json({success:true})
   }
   else{
