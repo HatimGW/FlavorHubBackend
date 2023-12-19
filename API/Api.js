@@ -81,13 +81,15 @@ router.post('/signup', [
 
 
   router.post("/login",async(req,res)=>{
+    console.log('Request Body:', req.body);
       const{email,password}=req.body
+      
 
       try {
       const check = await userdata.findOne({email})
       if(!check){
           res.status(404).json({message:"Invalid Email or password"})
-      }
+      }l
       const compare = await bcrypt.compare(password,check.password)
 
       if(compare){
@@ -96,6 +98,8 @@ router.post('/signup', [
               req.session.lastname = check.lastname;
               req.session.cart =  check.cart;
               req.session._id =  check._id;
+              console.log('Session Data:', req.session)
+              console.log('Session Data:', req.session.username)
               res.status(200).json({success:true,message:"Login Succesfully"})
       }
       else {
