@@ -15,6 +15,14 @@
   router.use(express.json());
   router.use(cookieParser());
 
+  router.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://flavorhub53.netlify.app'); 
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  });
+
   router.use(session({
       secret: process.env.SECRET_KEY,
       resave: false,
@@ -22,11 +30,11 @@
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
       }),
-      // cookie: {
-      //    secure: true ,
-      //    domain: 'flavorhub53.netlify.app',
-      //   sameSite: 'None',
-      //   httpOnly: true}
+      cookie: {
+         secure: true ,
+         domain: 'flavorhub53.netlify.app',
+        sameSite: 'None',
+        httpOnly: true}
     }));
 
 
