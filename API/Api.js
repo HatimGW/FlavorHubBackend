@@ -18,7 +18,7 @@
   router.use(session({
       secret: process.env.SECRET_KEY,
       resave: false,
-      saveUninitialized: false,
+      saveUninitialized: true,
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
       }),
@@ -98,6 +98,7 @@ router.post('/signup', [
               req.session.lastname = await check.lastname;
               req.session.cart = await check.cart;
               req.session._id = await check._id;
+
               res.status(200).json({success:true,message:"Login Succesfully"})
       }
       else {
