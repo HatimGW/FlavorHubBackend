@@ -26,7 +26,12 @@
       saveUninitialized: false,
       store: store,
       cookie: {
-         secure: true }
+        secure: true, // or false if not using HTTPS in development
+        maxAge: 1000 * 60 * 60 * 24, // set an appropriate session duration
+        httpOnly: true,
+        sameSite: 'strict', // or 'lax' depending on your requirements
+        name: 'your-session-name', // replace with your preferred name
+    }
     }));
 
 
