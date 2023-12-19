@@ -16,7 +16,7 @@
       secret: 'hatim@123',
       resave: false,
       saveUninitialized: true,
-      cookie: { secure:false}
+      cookie: { secure:true}
     }));
 
 
@@ -98,7 +98,7 @@ router.post('/signup', [
         res.send("Invalid")
       }
       } catch (error) {
-          console.log(error)
+         res.status(500).json({message:"Invalid"})
       }
   })
 
