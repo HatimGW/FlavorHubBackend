@@ -8,11 +8,9 @@ const PORT = process.env.PORT || 3001
 require("./Db/connection")
 
 app.use(cors({
-    origin: 'http://localhost:3000', // Set the origin of your client application
-    credentials: true, // Allow credentials (cookies)
+    origin: 'https://flavorhub-8t8f.onrender.com', 
+    credentials: true, 
   }))
-
-// app.use('./images', express.static(path.join(__dirname, 'images')));
 
 const API = require("./API/Api");
 app.use(API)
