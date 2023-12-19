@@ -16,7 +16,7 @@
       secret: 'hatim@123',
       resave: false,
       saveUninitialized: true,
-      cookie: { secure:true}
+      cookie: { secure: process.env.NODE_ENV === 'production'}
     }));
 
 
