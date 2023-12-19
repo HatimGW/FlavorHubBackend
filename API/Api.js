@@ -126,7 +126,7 @@ router.post('/signup', [
     //};
 const isAuthenticated = async (req, res, next) => {
   // Check if session cookie is present in the request
-  if (req.session && req.session._id) {
+  if (req.session && req.session.id) {
     try {
       // Retrieve user information from the database using the session identifier
       const user = await userdata.findById(req.session._id);
