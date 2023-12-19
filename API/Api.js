@@ -22,11 +22,11 @@
       store: MongoStore.create({
         mongoUrl: process.env.DATABASE,
       }),
-      cookie: {
-         secure: true ,
-         domain: 'flavorhub53.netlify.app',
-        sameSite: 'None',
-        httpOnly: true}
+      // cookie: {
+      //    secure: true ,
+      //    domain: 'flavorhub53.netlify.app',
+      //   sameSite: 'None',
+      //   httpOnly: true}
     }));
 
 
