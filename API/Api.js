@@ -356,7 +356,7 @@ const destroyCookiesOnLogout = (req, res, next) => {
 };
 
 // Logout endpoint
-router.get('/logout', destroySessionOnLogout, (req, res) => {
+router.get('/logout', destroyCookiesOnLogout, (req, res) => {
   res.status(200).json({ success: true, message: 'Logout successful' });
 });
 
