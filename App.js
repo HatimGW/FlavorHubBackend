@@ -3,6 +3,7 @@ const app = express()
 const path = require("path")
 const cors = require("cors")
 require('dotenv').config();
+const PORT = process.env.PORT || 3001
 
 require("./Db/connection")
 
@@ -20,4 +21,6 @@ app.use(API)
 const Fetch = require("./FETCH/fetch")
 app.use(Fetch)
 
-app.listen()
+app.listen(PORT,()=>{
+  console.log(PORT)
+})
