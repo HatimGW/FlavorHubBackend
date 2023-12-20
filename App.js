@@ -9,7 +9,7 @@ require("./Db/connection")
 
 app.use(cors({
     origin: 'https://flavorhub53.netlify.app',
-    credentials: true, 
+    credentials: "include", 
   }))
   // app.use(cors({
   //   origin: 'http://localhost:3000', 
