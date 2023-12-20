@@ -186,7 +186,7 @@ router.post('/signup', [
   };
 
 
-router.get("/check",async(req,res)=>{
+router.get("/check",isAuthenticated,async(req,res)=>{
   try {
     if(req.cookies.isAuth){
     res.status(200).json({success:true})
