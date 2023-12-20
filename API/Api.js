@@ -436,9 +436,8 @@ router.get("/check", isAuthenticated, async (req, res) => {
 });
 
 router.get('/main', isAuthenticated, (req, res) => {
-  console.log('User authenticated. Session:', req.cookies.firstname);
+  console.log('User authenticated. Session:', req.firstname);
 
-  // Respond with user information
   res.status(200).json({
     username: { first: req.firstname, last: req.lastname },
     success: true,
