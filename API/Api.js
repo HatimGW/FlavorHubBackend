@@ -342,24 +342,17 @@ const isAuthenticated = (req, res, next) => {
     return res.status(401).json({ success: false, message: 'Unauthorized' });
   }
 };
-const destroySessionOnLogout = (req, res, next) => {
-  // Destroy the session
-  req.session.destroy((err) => {
-    if (err) {
-      console.error('Error destroying session:', err);
-    }
+const destroyCookiesOnLogout = (req, res, next) => {
+  // Clear user-related cookies
+  res.clearCookie('token');
+  res.clearCookie('isAuth');
+  res.clearCookie('_id');
+  res.clearCookie('firstname');
+  res.clearCookie('lastname');
+  res.clearCookie('email');
 
-    // Clear user-related cookies
-    res.clearCookie('token');
-    res.clearCookie('isAuth');
-    res.clearCookie('_id');
-    res.clearCookie('firstname');
-    res.clearCookie('lastname');
-    res.clearCookie('email');
-
-    // Continue to the next middleware or endpoint
-    next();
-  });
+  // Continue to the next middleware or endpoint
+  next();
 };
 
 // Logout endpoint
