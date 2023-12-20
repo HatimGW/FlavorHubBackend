@@ -525,7 +525,7 @@ router.get("/upd", async (req, res) => {
       const response = user.cart;
       res.status(200).json({ cart: response });
     } else {
-      res.status(400).json({ success: false });
+      res.send({ success: false });
     }
 
   } catch (error) {
