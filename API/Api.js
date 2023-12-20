@@ -25,7 +25,7 @@
       resave: false,
       saveUninitialized: false,
       store: store,
-      sameSite:cookie: { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 48, sameSite: 'none' } 
+      cookie: { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 48, sameSite: 'none' } 
     }));
 
 
