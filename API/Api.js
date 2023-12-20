@@ -7,13 +7,13 @@
   const bodyParser = require('body-parser');
   router.use(bodyParser.json());
   const MongoStore = require('connect-mongodb-session')(session);
-  const cookieParser = require("cookie-parser");
+
 
 
   const Item = require("../Models/MenuModel")
 
   router.use(express.json());
-  router.use(cookieParser());
+ 
 
    const store = new MongoStore({
     uri: process.env.DATABASE,

@@ -2,7 +2,11 @@ const express = require("express")
 const app = express()
 const path = require("path")
 const cors = require("cors")
+const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 require('dotenv').config();
+app.use(cookieParser())
 const PORT = process.env.PORT || 3001
 
 require("./Db/connection")
