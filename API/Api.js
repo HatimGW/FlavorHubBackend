@@ -342,6 +342,30 @@ const isAuthenticated = (req, res, next) => {
     return res.status(401).json({ success: false, message: 'Unauthorized' });
   }
 };
+const destroySessionOnLogout = (req, res, next) => {
+  // Destroy the session
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+    }
+
+    // Clear user-related cookies
+    res.clearCookie('token');
+    res.clearCookie('isAuth');
+    res.clearCookie('_id');
+    res.clearCookie('firstname');
+    res.clearCookie('lastname');
+    res.clearCookie('email');
+
+    // Continue to the next middleware or endpoint
+    next();
+  });
+};
+
+// Logout endpoint
+router.get('/logout', destroySessionOnLogout, (req, res) => {
+  res.status(200).json({ success: true, message: 'Logout successful' });
+});
 
 router.post("/signup", [
   body('firstname').notEmpty().withMessage('First name is required'),
@@ -392,7 +416,7 @@ router.post("/login", async (req, res) => {
 
       if (compare) {
         const token = jwt.sign(
-          { userId: user._id, email: user.email },
+          { userId: user._id, email: user.email, firstname: user.firstname, lastname: user.lastname },
           process.env.JWT_SECRET,
           { expiresIn: '1h' }
         );
@@ -423,7 +447,7 @@ router.get('/main', isAuthenticated, (req, res) => {
 
   // Respond with user information
   res.status(200).json({
-    username: { first: req.cookies.firstname, last: req.cookies.lastname },
+    username: { first: req.firstname, last: req.lastname },
     success: true,
     message: 'Authenticated. Welcome to the main page!'
   });
