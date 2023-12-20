@@ -419,8 +419,14 @@ router.get("/check", isAuthenticated, async (req, res) => {
 });
 
 router.get('/main', isAuthenticated, (req, res) => {
-  console.log('User authenticated. UserID:', req.userId);
-  res.status(200).json({ success: true, message: 'Authenticated. Welcome to the main page!' });
+  console.log('User authenticated. Session:', req.cookies.firstname);
+
+  // Respond with user information
+  res.status(200).json({
+    username: { first: req.cookies.firstname, last: req.cookies.lastname },
+    success: true,
+    message: 'Authenticated. Welcome to the main page!'
+  });
 });
 
 router.get("/menu", async (req, res) => {
