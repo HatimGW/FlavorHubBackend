@@ -345,15 +345,7 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 const destroyCookiesOnLogout = (req, res, next) => {
-  // Clear user-related cookies
   res.clearCookie('token');
-  res.clearCookie('isAuth');
-  res.clearCookie('_id');
-  res.clearCookie('firstname');
-  res.clearCookie('lastname');
-  res.clearCookie('email');
-
-  // Continue to the next middleware or endpoint
   next();
 };
 
