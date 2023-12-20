@@ -29,7 +29,7 @@
         secure: true, // or false if not using HTTPS in development
         maxAge: 1000 * 60 * 60 * 24, // set an appropriate session duration
         httpOnly: true,
-        sameSite: 'strict'
+        sameSite: 'none'
     }
     }));
 
