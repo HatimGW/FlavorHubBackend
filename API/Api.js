@@ -345,7 +345,7 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 const destroyCookiesOnLogout = (req, res, next) => {
-  res.clearCookie('token');
+  res.clearCookie('token', { httpOnly: true, secure: true, sameSite: 'None' });
   next();
 };
 
