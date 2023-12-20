@@ -515,6 +515,9 @@ router.delete("/delete", isAuthenticated, async (req, res)=> {
 });
 
 router.get("/upd", async (req, res) => {
+
+  res.header('Access-Control-Allow-Origin', 'https://flavorhub53.netlify.app');
+  res.header('Access-Control-Allow-Credentials', true);
   try {
     const user = await userdata.findById(req.userId);
 
