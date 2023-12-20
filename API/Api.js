@@ -30,19 +30,41 @@
 
 
 
-const destroySessionOnLoad = (req, res, next) => {
+// const destroySessionOnLoad = (req, res, next) => {
       
-      req.session.destroy((err) => {
-        if (err) {
-          console.error('Error destroying session:', err);
-        }
-        next();
-      });
-    };
+//       req.session.destroy((err) => {
+//         if (err) {
+//           console.error('Error destroying session:', err);
+//         }
+//         next();
+//       });
+//     };
+
+// router.get('/logout', destroySessionOnLoad, (req, res) => {
+//       res.send('Session destroyed');
+//     });
+
+const destroySessionOnLoad = (req, res, next) => {
+  // Destroy the session
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+    }
+
+    // Clear session-related cookies
+    res.clearCookie('isAuth');
+    res.clearCookie('_id');
+    res.clearCookie('firstname');
+    res.clearCookie('lastname');
+    res.clearCookie('email');
+
+    next();
+  });
+};
 
 router.get('/logout', destroySessionOnLoad, (req, res) => {
-      res.send('Session destroyed');
-    });
+  res.send('Session destroyed');
+});
 
 
 
@@ -85,49 +107,88 @@ router.post('/signup', [
   })
 
 
-  router.post("/login",async(req,res)=>{
-      const{email,password}=req.body
+  // router.post("/login",async(req,res)=>{
+  //     const{email,password}=req.body
 
-      try {
-      const check = await userdata.findOne({email})
-      if(!check){
-          res.status(404).json({message:"Invalid Email or password"})
-      }else{
-      const compare = await bcrypt.compare(password,check.password)
+  //     try {
+  //     const check = await userdata.findOne({email})
+  //     if(!check){
+  //         res.status(404).json({message:"Invalid Email or password"})
+  //     }else{
+  //     const compare = await bcrypt.compare(password,check.password)
 
-      if(compare){
-          req.session.isAuth = true;
-          req.session._id = check._id
-          req.session.firstname = check.firstname
-          req.session.lastname = check.lastname
-          req.session.email = check.email
-              res.status(200).json({success:true, message:"Login Succesfully"})
-      }
-      else {
-        res.status(400).json({ message: "Invalid Credential" });
-      }
-     } } 
-     catch (error) {
-         res.status(500).json({message:"Invalid"})
-      }
-  })
+  //     if(compare){
+  //         req.session.isAuth = true;
+  //         req.session._id = check._id
+  //         req.session.firstname = check.firstname
+  //         req.session.lastname = check.lastname
+  //         req.session.email = check.email
+  //             res.status(200).json({success:true, message:"Login Succesfully"})
+  //     }
+  //     else {
+  //       res.status(400).json({ message: "Invalid Credential" });
+  //     }
+  //    } } 
+  //    catch (error) {
+  //        res.status(500).json({message:"Invalid"})
+  //     }
+  // })
 
 
 
-  const isAuthenticated = (req, res, next) => {
-      if (req.session.isAuth) {
-        console.log('Authentication successful. Session:', req.session.firstname);
-        next();
+  // const isAuthenticated = (req, res, next) => {
+  //     if (req.session.isAuth) {
+  //       console.log('Authentication successful. Session:', req.session.firstname);
+  //       next();
+  //     } else {
+  //       console.log('Authentication failed. Session:', req.session.firstname);
+  //       res.status(401).json({ success: false, message: 'Unauthorized' });
+  //     }
+  //   };
+
+  router.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      const check = await userdata.findOne({ email });
+  
+      if (!check) {
+        res.status(404).json({ message: "Invalid Email or password" });
       } else {
-        console.log('Authentication failed. Session:', req.session.firstname);
-        res.status(401).json({ success: false, message: 'Unauthorized' });
+        const compare = await bcrypt.compare(password, check.password);
+  
+        if (compare) {
+          // Set session variables in cookies after successful login
+          res.cookie('isAuth', true,{ secure: true, httpOnly: true });
+          res.cookie('_id', check._id,{ secure: true, httpOnly: true });
+          res.cookie('firstname', check.firstname,{ secure: true, httpOnly: true });
+          res.cookie('lastname', check.lastname,{ secure: true, httpOnly: true });
+          res.cookie('email', check.email,{ secure: true, httpOnly: true });
+  
+          res.status(200).json({ success: true, message: "Login Successfully" });
+        } else {
+          res.status(400).json({ message: "Invalid Credentials" });
+        }
       }
-    };
+    } catch (error) {
+      res.status(500).json({ message: "Invalid" });
+    }
+  });
+  
+  const isAuthenticated = (req, res, next) => {
+    if (req.cookies.isAuth) {
+      console.log('Authentication successful. Session:', req.cookies.firstname);
+      next();
+    } else {
+      console.log('Authentication failed. Session:', req.cookies.firstname);
+      res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+  };
 
 
 router.get("/check",async(req,res)=>{
   try {
-    if(req.session.isAuth){
+    if(req.cookies.isAuth){
     res.status(200).json({success:true})
   }
   else{
@@ -141,8 +202,8 @@ router.get("/check",async(req,res)=>{
 
 
   router.get('/main', isAuthenticated, (req, res) => {
-      console.log('User authenticated. Session:', req.session);
-      res.status(200).json({ username:{first:req.session.firstname,last:req.session.lastname}, success: true, message: 'Authenticated. Welcome to the main page!' });
+      console.log('User authenticated. Session:', req.cookies.firstname);
+      res.status(200).json({ username:{first:req.cookies.firstname,last:req.cookies.lastname}, success: true, message: 'Authenticated. Welcome to the main page!' });
     });
 
 
@@ -165,11 +226,11 @@ router.get("/check",async(req,res)=>{
     const{id,Title,img,Descrpition,Price,amount}=req.body
     
     try {
-     const user = await userdata.findById(req.session._id)
+     const user = await userdata.findById(req.cookies._id)
      const check =  user.cart.some((item)=>item.id === id)
      if(!check){
       await userdata.findByIdAndUpdate(
-        req.session._id,
+        req.cookies._id,
       {
         $push: {
           cart: { id, Title, img, Descrpition, Price, amount },
@@ -195,7 +256,7 @@ router.post("/amount",isAuthenticated, async(req,res)=>{
   const{id,amount}=req.body
 
   try {
-    const userId = req.session._id
+    const userId = req.cookies._id
 
      await userdata.updateOne(
       { "_id": userId, "cart.id": id },
@@ -214,7 +275,7 @@ router.post("/amount",isAuthenticated, async(req,res)=>{
     const{id}=req.query
   
     try {
-      const user = await userdata.findById(req.session._id);
+      const user = await userdata.findById(req.cookies._id);
     
       if(user){
         await user.updateOne({
@@ -233,7 +294,7 @@ router.post("/amount",isAuthenticated, async(req,res)=>{
 
   router.get("/upd",async(req,res)=>{
     try {
-      const user = await userdata.findById(req.session._id)
+      const user = await userdata.findById(req.cookies._id)
       if(user){
         const response = user.cart
         res.status(200).json({cart:response})
