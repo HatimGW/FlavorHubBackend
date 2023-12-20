@@ -21,4 +21,6 @@ app.use(API)
 const Fetch = require("./FETCH/fetch")
 app.use(Fetch)
 
-app.listen(PORT)
+app.listen(PORT,()=>{
+  console.log(PORT)
+})
