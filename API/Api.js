@@ -515,12 +515,12 @@ router.delete("/delete", isAuthenticated, async (req, res)=> {
   }
 });
 
-router.get("/upd", async (req, res) => {
+router.get("/upd",isAuthenticated, async (req, res) => {
   try {
     const user = await userdata.findById(req.userId);
 
     if (user) {
-      const response = req.cart;
+      const response = user.cart;
       res.status(200).json({success:true, cart: response });
     } else{
       res.send({success:false})
