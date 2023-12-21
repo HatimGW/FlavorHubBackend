@@ -521,12 +521,10 @@ router.get("/upd", async (req, res) => {
     if (user) {
       const response = user.cart;
       res.status(200).json({ cart: response });
-    } else {
-      res.send({ success: false });
-    }
-
+    } 
+    res.status(400)
   } catch (error) {
-    res.status(403).json(error);
+    res.status(500).json(error);
   }
 });
 
