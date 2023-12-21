@@ -339,6 +339,7 @@ const isAuthenticated = (req, res, next) => {
     req.userId = decoded.userId;
     req.firstname = decoded.firstname;
     req.lastname = decoded.lastname;
+    req.cart = decoded.cart;
     next();
   } catch (error) {
     return res.status(401).json({ success: false, message: 'Unauthorized' });
@@ -403,7 +404,7 @@ router.post("/login", async (req, res) => {
 
       if (compare) {
         const token = jwt.sign(
-          { userId: user._id, email: user.email, firstname: user.firstname, lastname: user.lastname },
+          { userId: user._id, email: user.email, firstname: user.firstname, lastname: user.lastname, cart: user.cart },
           process.env.JWT_SECRET,
           { expiresIn: '1h' }
         );
@@ -515,14 +516,11 @@ router.delete("/delete", isAuthenticated, async (req, res)=> {
 });
 
 router.get("/upd", async (req, res) => {
-
-  res.header('Access-Control-Allow-Origin', 'https://flavorhub53.netlify.app');
-  res.header('Access-Control-Allow-Credentials', true);
   try {
     const user = await userdata.findById(req.userId);
 
     if (user) {
-      const response = user.cart;
+      const response = req.cart;
       res.status(200).json({ cart: response });
     } else {
       res.send({ success: false });
