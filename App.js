@@ -15,10 +15,6 @@ app.use(cors({
     origin: 'https://flavorhub53.netlify.app',
     credentials: true, 
   }))
-  // app.use(cors({
-  //   origin: 'http://localhost:3000', 
-  //   credentials: true, 
-  // }))
   
 const API = require("./API/Api");
 app.use(API)
