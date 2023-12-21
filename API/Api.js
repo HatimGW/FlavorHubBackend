@@ -339,7 +339,6 @@ const isAuthenticated = (req, res, next) => {
     req.userId = decoded.userId;
     req.firstname = decoded.firstname;
     req.lastname = decoded.lastname;
-    req.cart = decoded.cart;
     next();
   } catch (error) {
     return res.status(401).json({ success: false, message: 'Unauthorized' });
@@ -404,7 +403,7 @@ router.post("/login", async (req, res) => {
 
       if (compare) {
         const token = jwt.sign(
-          { userId: user._id, email: user.email, firstname: user.firstname, lastname: user.lastname, cart: user.cart },
+          { userId: user._id, email: user.email, firstname: user.firstname, lastname: user.lastname},
           process.env.JWT_SECRET,
           { expiresIn: '1h' }
         );
@@ -520,7 +519,7 @@ router.get("/upd", async (req, res) => {
     const user = await userdata.findById(req.userId);
 
     if (user) {
-      const response = req.cart;
+      const response = user.cart;
       res.status(200).json({ cart: response });
     } else {
       res.send({ success: false });
