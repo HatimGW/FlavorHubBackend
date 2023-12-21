@@ -350,7 +350,7 @@ const destroyCookiesOnLogout = (req, res, next) => {
   next();
 };
 
-// Logout endpoint
+
 router.get('/logout', destroyCookiesOnLogout, (req, res) => {
   res.status(200).json({ success: true, message: 'Logout successful' });
 });
@@ -521,9 +521,10 @@ router.get("/upd", async (req, res) => {
 
     if (user) {
       const response = req.cart;
-      res.status(200).json({ cart: response });
-    } 
-    res.status(400)
+      res.status(200).json({success:true, cart: response });
+    } else{
+      res.send({success:false})
+    }
   } catch (error) {
     res.status(500).json(error);
   }
