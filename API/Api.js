@@ -95,7 +95,7 @@ router.post("/login", async (req, res) => {
         res.cookie('token', token, { httpOnly: true, secure: true, maxAge: 3600000,sameSite: 'None'});
         res.status(200).json({ success: true, message: "Login Successfully" });
       } else {
-        res.status(400).json({ message: "Invalid Credentials" });
+        res.json({ message: "Invalid Credentials" });
       }
     }
   } catch (error) {
